@@ -1,5 +1,5 @@
 html {
-    font-size: 35px;
+    font-size: 40px;
     background: #EBF5FB;
 }
 
@@ -47,6 +47,19 @@ nav {
     border: 2px solid #AED6F1;
     border-top: 2px solid #AED6F1;
     background-color: #D6EAF8;
+    width: 300px;
+    height: 100px;
 }
 
+h2 {
+    margin-top: -8px;
+    margin-bottom: 5px;
+    margin-left: 75px;
+    font-size: 30px;
+}
 
+p {
+    margin-top: 0px;
+    margin-left: 75px;
+    font-size: 15px;
+}

@@ -1,13 +1,11 @@
-/*start main*/
-
 html {
-    font-size: 35px;
-    background: #EBF5FB;
+    font-size: 25px;
+    background: #f3faff;
 }
 
 body {
     color: #2874A6;
-    font-size: 20px;
+    font-size: 15px;
     font-family: sans-serif;
     line-height: 1.5;
 }
@@ -15,15 +13,16 @@ body {
 a,
 a:visited {
     color: #3498DB;
-    font-style: italic;
+    font-style: oblique;
     font-size: 15px;
-    padding: 15px;
+    padding: 10px;
+    position: absolute;
 }
 
 header {
     background-color: #EBF5FB;
-    border-bottom: 0.5px solid #D6EAF8;
-    border-top: 0.5px solid #D6EAF8;
+    border-bottom: 1px solid #D6EAF8;
+    border-top: 1px solid #D6EAF8;
     color: #85C1E9;
     font-family: cursive;
     position: absolute;
@@ -33,36 +32,37 @@ header {
 }
 
 header h1 {
+    font-size: 25px;
     margin-left: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 #content {
-    margin-top: 120px;
-    margin-left: 20px;
+    position: absolute;
+    margin-top: 100px;
+    margin-left: 10px;
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 200px 1fr;
     grid-column-gap: 20px;
 }
 
 nav {
     border: 2px solid #AED6F1;
     background-color: #D6EAF8;
-    height: 35px;
-    width: 180px;
+    height: 42px;
+    width: 165px;
+    margin: 0px;
 }
 
-/*end main*/
-
-
-/*start chart*/
-
-rect {
-    fill: gray;
+h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0px;
+    font-size: 30px;
 }
 
-text {
-    font-family: sans-serif;
-    fill: black;
+p {
+    margin: 0px;
+    font-size: 15px;
 }
-
-/*end chart*/
