@@ -15,14 +15,13 @@ a:visited {
     color: #3498DB;
     font-style: italic;
     font-size: 15px;
+    padding-left: 10px;
 }
 
 header {
     background-color: #EBF5FB;
-/*
     border-bottom: 0.5px solid #D6EAF8;
     border-top: 0.5px solid #D6EAF8;
-*/
     color: #85C1E9;
     font-family: cursive;
     position: absolute;
@@ -45,8 +44,7 @@ header h1 {
 
 nav {
     border: 2px solid #AED6F1;
-    border-top: 2px solid #AED6F1;
     background-color: #D6EAF8;
+    height: 70px;
+    width: 200px;
 }
-
-
