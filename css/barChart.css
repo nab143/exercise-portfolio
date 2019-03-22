@@ -69,3 +69,10 @@ p {
     margin: 0px;
     font-size: 15px;
 }
+
+/* bar chart */
+
+.barchart {
+  margin-top: 250px;
+  margin-left: 200px;
+}
