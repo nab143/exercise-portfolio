@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Nicole Barba's Exercise Portfolio: 2018 NFL Rushing</title>
+    <title>Nicole Barba's Exercise Portfolio: 2018 MLB Standings</title>
     <link href="/css/barChart.css" rel="stylesheet" />
   </head>
 
@@ -18,13 +18,13 @@
 
           <nav>
 
-              <a href = "/index.html"><b>Return to Home Page</b></a>
+              <a href = "/index.html"><b>Return To Main Page</b></a>
 
           </nav>
 
           <main>
 
-            <h2>2018 MLB Wins</h2>
+            <h2>2018 MLB Standings</h2>
 
             <p>This bar chart shows the number of wins for each team in Major Legue Baseball during the 2018 season.</p>
             <p>As you can see, Boston won the most games and Baltimore won the least amount of games.</p>
@@ -39,25 +39,39 @@
 
     <script>
 
-      //adding the data with an array
-      var dataArray = [46,58,62,63,64,66,67,67,73,73,77,78,80,80,82,82,82,88,89,90,90,91,91,92,95,96,97,100,103,108];
+    //adding the data with an array
+    var dataWins = [46,58,62,63,64,66,67,67,73,73,77,78,80,80,82,82,82,88,89,90,90,91,91,92,95,96,97,100,103,108];
 
-      //append the svg to main
-      var svg = d3.select("body").append("svg")
-                      .attr("class","barchart")
-                      .attr("height","100%")
-                      .attr("width","100%");
+    //append the svg to main
+    var svg = d3.select("body").append("svg")
+                    .attr("class","barchart")
+                    .attr("height","100%")
+                    .attr("width","100%");
 
-      //adding rectangles to the svg
-      svg.selectAll("rect")
-          .data(dataArray)
-          .enter()
-          .append("rect")
-          .attr("height","200")
-          .attr("width","25")
-          .attr("x",function(d,i){ return 30*i; })
-          .attr("y",function(d,i) { return d; })
-          .attr("fill","#2874A6");
+    //adding rectangles to the svg
+    svg.selectAll("rect")
+        .data(dataWins)
+        .enter()
+        .append("rect")
+        .attr("class","bars")
+        .attr("height","300")
+        .attr("width","30")
+        .attr("x",function(d,i){ return 35*i; })
+        .attr("y",function(d,i) { return d; });
+
+    //adding text
+    var textArray = ['BAL','KAN','CHW','MIA','DET','SDG','TEX','CIN','TOR','SFG','NYM','MIN','PHI','LAA','WSH','ARI','PIT','STL','SEA','TAM','ATL','COL','CLE','LAD','CHC','MIL','OAK','NYY','HOU','BOS'];
+
+    svg.append("text").selectAll("tspan")
+        .data(textArray)
+        .enter()
+        .append("tspan")
+        .attr("class","text")
+        .attr("x",function(d,i){ return 0 + (i*35); })
+        .attr("y","150")
+        .attr("fill","#2874A6")
+        .attr("font-size","12")
+        .text(function(d){ return d; });
 
     </script>
   </body>
