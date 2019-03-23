@@ -4,6 +4,26 @@
     <meta charset="UTF-8" />
     <title>Nicole Barba's Exercise Portfolio: 2018 NFL Rushing Statistics</title>
     <link href="/css/scatterplot.css" rel="stylesheet" />
+
+    <style>
+		  text {
+				font-family: sans-serif;
+				font-size: 10px;
+				letter-spacing: 1px;
+        fill: #2874A6;
+			}
+
+			circle {
+				fill: #D6EAF8;
+        stroke: #AED6F1;
+        stroke-width: 2px;
+			}
+
+			.xaxis text {
+				transform: translate(-15px, 8px) rotate(-45deg);
+			}
+		</style>
+
   </head>
 
   <body>
@@ -26,19 +46,115 @@
 
         <h2>2018 NFL Rushing Statistics</h2>
 
-        <p>This scatterplot shows the relationships between yards, touchdowns, and fumbles for fullback players rushing the NFL in 2018.</p>
-        <p>As you can see, ...</p>
+        <p>This scatterplot shows the relationships between the attempts, yards, and touchdowns of running back players rushing the NFL in 2018.</p>
+        <p><i>(This graph only represents players with 7 or more touchdowns)</i></p>
 
         <!-- ADD YOUR VISUALIZATION HERE -->
 
       </main>
     </div>
 
+    <br><br><br><br><br><br>
+
     <script src="js/d3.min.js"></script>
     <script>
 
-      //adding the data in an array
-      var dataArray = []
+    //data for MLB teams with wins over 90
+			var dataset = [
+				[256, 1251, 17],
+				[237, 1168, 8],
+				[247, 1151, 9],
+				[261, 1307, 11],
+				[195, 908, 9],
+				[181, 824, 7],
+				[215, 973, 12],
+				[175, 885, 10],
+				[192, 1037, 9],
+				[219, 1098, 7],
+				[215, 1059, 12],
+        [251, 1042, 7],
+        [192, 996, 8],
+        [133, 728, 8],
+        [194, 883, 14],
+        [258, 940, 7],
+        [250, 935, 9],
+        [114, 411, 7]
+			];
+
+			// width, height, padding
+      var w = 700,
+				  h = 500,
+				  padding = 100;
+
+
+      		// svg
+			var svg = d3.select("body").append("svg");
+
+
+			// xScale
+			var xScale = d3.scaleLinear()
+			  .domain([100, d3.max(dataset, function(d) { return d[0] })])
+				.range([padding, w - padding]);
+
+
+			// yScale
+			var yScale = d3.scaleLinear()
+			  .domain([400, d3.max(dataset, function(d) { return d[1] })])
+				.range([h - padding, padding]);
+
+      		// rScale with square root of argument
+			var rScale = d3.scaleSqrt();
+
+
+      		// width and height for padding
+			svg.attr("width", w + padding)
+			   .attr("height", h + padding);
+
+
+			// adding circles for data points with rScale set to array value 2
+			svg.selectAll("circle")
+			   .data(dataset)
+				 .enter()
+				 .append("circle")
+				 .attr("cx", function(d) { return xScale(d[0]) })
+				 .attr("cy", function(d) { return yScale(d[1]) })
+				 .attr("r", function(d) { return rScale(d[2]) * 2 });
+
+
+		  // add Win number labels to circles
+			svg.selectAll("text")
+			  .data(dataset)
+				.enter()
+				.append("text")
+				.attr("x", function(d) { return xScale(d[0]) + rScale(d[2]) + 4 })
+				.attr("y", function(d) { return yScale(d[1]) + 4})
+				.text(function(d) { return d[2] });
+
+
+			// Create the xAxis position at the bottom of plot with number of tick marks
+			var xAxis = d3.axisBottom()
+			  .scale(xScale)
+				.ticks(5);
+
+
+			// Create the yAxis position at the bottom of plot with number of tick marks
+			var yAxis = d3.axisLeft()
+			  .scale(yScale)
+				.ticks(6);
+
+
+      		// create a group for xaxis
+			svg.append("g")
+			  .attr("class", "xaxis")
+				.attr("transform", "translate(0, " + (h - padding) + ")")
+				.call(xAxis);
+
+
+			// Create a group for yaxis
+			svg.append("g")
+			  .attr("class", "yaxis")
+				.attr("transform", "translate(" + padding + "," + 0 + ")")
+				.call(yAxis);
 
     </script>
   </body>
