@@ -69,3 +69,33 @@ p {
     margin: 0px;
     font-size: 15px;
 }
+
+/* area chart */
+svg {
+  margin-top: 100px;
+}
+
+circle {
+    fill: #D6EAF8;
+    stroke: #AED6F1;
+    stroke-width: 2px;
+}
+
+text {
+    fill: #2874A6;
+    font-family: sans-serif;
+    font-size: 10px;
+}
+
+.data-line {
+    fill: #D6EAF8;
+    stroke: #2874A6;
+    stroke-width: 2px;
+}
+
+.max-line {
+    fill: none;
+    stroke: #AED6F1;
+    stroke-width: 2px;
+    stroke-dasharray: 10,10;
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	  <meta charset="UTF-8" />
+		<title>Area Chart</title>
+    <link href="/css/areaChart.css" rel="stylesheet" />
+	</head>
+
+  <body>
+
+      <header>
+
+          <h1>Nicole Barba : Exercise Portfolio</h1>
+
+        </header>
+
+        <div id="content">
+
+          <nav>
+
+              <a href = "/index.html"><b>Return To Main Page</b></a>
+
+          </nav>
+
+          <main>
+
+            <h2>Google, LLC (GOOG)</h2>
+
+            <p><b>This area chart shows the monthly stock closing prices of Google over the last 7 years.</b></p>
+            <p><b><i>Events highlighted below include:</i></b></p>
+            <p><i> - Initial Public Offering (IPO)</i></p>
+            <p><i> - The acquisition of YouTube</i></p>
+            <p><i> - The introduction of the Android</i></p>
+            <p><i> - The New York Times exposé</i></p>
+
+            <!-- ADD YOUR VISUALIZATION HERE -->
+
+          </main>
+
+        </div>
+
+    <script src="js/d3.min.js"></script>
+    <script>
+
+    d3.csv("data/GOOG.csv").then(function(data) {
+
+        var timeParser = d3.timeParse("%Y-%m-%d");
+
+        data.forEach(function(d) {
+          d.Date = timeParser(d.Date);
+          d.Close = +d.Close;
+        });
+
+        var w = window.innerWidth,
+            h = window.innerHeight;
+
+        var margin = {
+          top: 200,
+          right: 200,
+          bottom: 200,
+          left: 200
+        };
+
+        var svg = d3.select("body").append("svg");
+
+        svg.attr("width", w - margin.right)
+           .attr("height", h);
+
+        var xScale = d3.scaleTime()
+          .domain(d3.extent(data, function(d) { return d.Date } ))
+          .range([0, (w - margin.left - margin.right)]);
+
+        var yScale = d3.scaleLinear()
+          .domain(d3.extent(data, function(d) { return d.Close }))
+          .range([(h - margin.top - margin.bottom), 0])
+
+        var line = d3.area()
+          .x(function(d) { return xScale(d.Date) })
+          .y0(function(d) { return yScale.range()[0]; })
+          .y1(function(d) { return yScale(d.Close) });
+
+        svg.append("g")
+           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+           .append("path")
+           .datum(data)
+           .attr("class", "data-line")
+           .attr("d", line);
+
+        var xAxis = d3.axisBottom()
+          .scale(xScale)
+          .ticks(10);
+
+        var yAxis = d3.axisLeft()
+          .scale(yScale)
+          .ticks(6);
+
+        svg.append("g")
+          .attr("transform", "translate(" + margin.left + "," + (h - margin.bottom) + ")")
+          .attr("class", "xaxis")
+          .call(xAxis);
+
+        svg.append("g")
+           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+           .attr("class", "yaxis")
+           .call(yAxis);
+
+
+           // creating the text svg for the highest closing price
+           svg.append("text")
+              .attr("x", 910)
+              .attr("y", 195)
+              .text("Highest Closing Price: 1218.18")
+
+           // creating circles and text for identifying events
+           // IPO: August 2004
+           svg.append("circle")
+               .attr("class","circle")
+               .attr("cx","205")
+               .attr("cy","443")
+               .attr("r","3");
+           svg.append("text")
+              .attr("x", 205)
+              .attr("y", 435)
+              .text("IPO")
+
+           // Acquired YouTube: October 2006
+           svg.append("circle")
+               .attr("class","circle")
+               .attr("cx","286")
+               .attr("cy","413")
+               .attr("r","3");
+           svg.append("text")
+              .attr("x", 286)
+              .attr("y", 408)
+              .text("YouTube")
+
+           // Android: September 2008
+           svg.append("circle")
+               .attr("class","circle")
+               .attr("cx","406")
+               .attr("cy","398")
+               .attr("r","3");
+           svg.append("text")
+              .attr("x", 406)
+              .attr("y", 393)
+              .text("Android")
+
+           // New York Times exposé: October 2018
+           svg.append("circle")
+               .attr("class","circle")
+               .attr("cx","1010")
+               .attr("cy","213")
+               .attr("r","3");
+           svg.append("text")
+              .attr("x", 963)
+              .attr("y", 210)
+              .text("NY Times")
+
+           // adding the highest rate line
+
+           var maxClose = data.filter(function(d) {
+
+           // determining the highest close point
+           var max = d3.max(data, function(d) { return d.Close });
+
+           // conditional for the highest close point
+             if(d.Close == max) {
+               return d.Close;
+             }
+           });
+
+           // appending the line for the highest closing point
+           svg.append("line")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+              .attr("class", "max-line")
+              .attr("x1", 0)
+              .attr("x2", (w - margin.left - margin.right))
+              .attr("y1", yScale(max))
+              .attr("y2", yScale(max));
+
+      });
+
+    </script>
+  </body>
+</html>

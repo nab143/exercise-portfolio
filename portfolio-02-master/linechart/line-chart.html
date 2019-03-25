@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	  <meta charset="UTF-8" />
+		<title>Line Chart</title>
+    <link href="/css/lineChart.css" rel="stylesheet" />
+
+	</head>
+
+  <body>
+
+      <header>
+
+          <h1>Nicole Barba : Exercise Portfolio</h1>
+
+        </header>
+
+        <div id="content">
+
+          <nav>
+
+              <a href = "/index.html"><b>Return To Main Page</b></a>
+
+          </nav>
+
+          <main>
+
+            <h2>Apple Inc. (AAPL)</h2>
+
+            <p><b>This line chart shows the monthly stock closing prices of Apple Inc. over the last 23 years.</b></p>
+            <p><b><i>Events highlighted below include:</i></b></p>
+            <p><i> - The introduction of the iMac</i></p>
+            <p><i> - The introduction of the iPhone</i></p>
+            <p><i> - The introduction of the iPad</i></p>
+            <p><i> - Apple becoming a trillion-dollar company</i></p>
+
+            <!-- ADD YOUR VISUALIZATION HERE -->
+
+          </main>
+
+        </div>
+
+    <script src="js/d3.min.js"></script>
+    <script>
+
+        // adding data from csv file
+        d3.csv("data/AAPL.csv").then(function(data) {
+
+        // converting the data
+
+        // setting up time parser
+        var timeParser = d3.timeParse("%Y-%m-%d");
+
+        // Convert date to Date(), unrate to number
+        data.forEach(function(d) {
+            d.Date = timeParser(d.Date);
+            d.Close = +d.Close;
+        });
+
+        // creating the svg
+        // setting the canvas width and height
+        var w = window.innerWidth,
+            h = window.innerHeight;
+
+        // setting up the svg margins
+        var margin = {
+                    top: 200,
+                    right: 200,
+                    bottom: 200,
+                    left: 200
+        };
+
+        // drawing the svg
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("class","svg");
+
+        // Add width, height attributes to SVG
+        svg.attr("width", w - margin.right)
+           .attr("height", h);
+
+        // creating the x scale based on time
+        var xScale = d3.scaleTime()
+          .domain(d3.extent(data, function(d) { return d.Date } ))
+          .range([0, (w - margin.left - margin.right)]);
+
+        // creating the y scale based on time
+        var yScale = d3.scaleLinear()
+          .domain(d3.extent(data, function(d) { return d.Close }))
+          .range([(h - margin.top - margin.bottom), 0])
+
+        // drawing the scale lines
+        var line = d3.line()
+          .x(function(d) { return xScale(d.Date); } )
+          .y(function(d) { return yScale(d.Close); } );
+
+        // appending the scale lines to the svg
+        svg.append("g")
+           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+           .append("path")
+           .datum(data)
+           .attr("class", "data-line")
+           .attr("d", line);
+
+        // creating the x axis
+        var xAxis = d3.axisBottom()
+          .scale(xScale)
+          .ticks(12);
+
+        // creating the y axis
+        var yAxis = d3.axisLeft()
+          .scale(yScale)
+          .ticks(6);
+
+        // appending the x axis
+        svg.append("g")
+          .attr("transform", "translate(" + margin.left + "," + (h - margin.bottom) + ")")
+          .attr("class", "xaxis")
+          .call(xAxis);
+
+        // appending the y axis
+        svg.append("g")
+           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+           .attr("class", "yaxis")
+           .call(yAxis);
+
+        // creating the text svg for the highest closing price
+        svg.append("text")
+           .attr("x", 928)
+           .attr("y", 195)
+           .text("Highest Closing Price: 227.63")
+
+        // creating circles and text for identifying events
+        // August 1998: Apple Introduces the iMac
+        svg.append("circle")
+            .attr("class","circle")
+            .attr("cx","276")
+            .attr("cy","447")
+            .attr("r","3");
+        svg.append("text")
+           .attr("x", 276)
+           .attr("y", 442)
+           .text("iMac")
+
+        // June 2007: Apple introduces the iPhone
+        svg.append("circle")
+            .attr("class","circle")
+            .attr("cx","615")
+            .attr("cy","433")
+            .attr("r","3");
+        svg.append("text")
+           .attr("x", 615)
+           .attr("y", 445)
+           .text("iPhone")
+
+        // April 2010: Apple introduces the iPad
+        svg.append("circle")
+            .attr("class","circle")
+            .attr("cx","728")
+            .attr("cy","417")
+            .attr("r","3");
+        svg.append("text")
+           .attr("x", 728)
+           .attr("y", 429)
+           .text("iPad")
+
+        // August 2018: Apple becomes a trillion-dollar company
+        svg.append("circle")
+            .attr("class","circle")
+            .attr("cx","1029")
+            .attr("cy","265")
+            .attr("r","3");
+        svg.append("text")
+           .attr("x", 1029)
+           .attr("y", 277)
+           .text("$1T")
+
+        // adding the highest rate line
+
+        var maxClose = data.filter(function(d) {
+
+        // determining the highest close point
+        var max = d3.max(data, function(d) { return d.Close });
+
+        // conditional for the highest close point
+          if(d.Close == max) {
+            return d.Close;
+          }
+        });
+
+        // appending the line for the highest closing point
+        svg.append("line")
+           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+           .attr("class", "max-line")
+           .attr("x1", 0)
+           .attr("x2", (w - margin.left - margin.right))
+           .attr("y1", yScale(max))
+           .attr("y2", yScale(max));
+
+      });
+
+    </script>
+  </body>
+</html>
