@@ -104,7 +104,6 @@
            .attr("class", "yaxis")
            .call(yAxis);
 
-
            // creating the text svg for the highest closing price
            svg.append("text")
               .attr("x", 910)
@@ -156,7 +155,7 @@
               .attr("y", 210)
               .text("NY Times")
 
-           // adding the highest rate line
+           // adding the highest closing price line
 
            var maxClose = data.filter(function(d) {
 
