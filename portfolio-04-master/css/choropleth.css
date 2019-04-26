@@ -70,15 +70,4 @@ p {
     font-size: 15px;
 }
 
-/* bar chart */
-
-.barchart {
-  margin-top: 250px;
-  margin-left: 100px;
-}
-
-.bars {
-  stroke: #AED6F1;
-  stroke-width: 2px;
-  fill:  #D6EAF8;
-}
+/* choropleth map */

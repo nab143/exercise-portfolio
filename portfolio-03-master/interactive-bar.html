@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nicole Barba's Exercise Portfolio: MLB Standings</title>
+    <link href="css/interactive-bar.css" rel="stylesheet" />
+
+    <style>
+
+    .rectangle {
+    	fill: steelblue;
+    }
+
+    .axis {
+      font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    </style>
+
+  </head>
+
+  <body>
+
+      <header>
+
+          <h1>Nicole Barba : Exercise Portfolio</h1>
+
+        </header>
+
+        <div id="content">
+
+          <nav>
+
+              <a href = "/MainPage.html"><b>Return To Main Page</b></a>
+
+          </nav>
+
+          <main>
+
+            <h2>MLB Spring Training Standings</h2>
+
+            <p><b>This interactive bar chart shows the winning percentages for each MLB team. </b></p>
+            <p><b>The MLB teams are divided into two leages: <i>Grapefruit and Cactus</i></b></p>
+
+
+
+
+
+          </main>
+
+        </div>
+
+
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+
+    <script>
+
+        //creating svg margin
+        var margin = {top: 250, right: 10, bottom: 50, left: 280},
+            width = 900 - margin.left - margin.right,
+            height = 600 - margin.top - margin.bottom;
+
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        d3.csv("data/springtraining.csv", function(error, data){
+
+    	// filter league
+    	var data = data.filter(function(d){return d.league == 'G';});
+
+    	var elements = Object.keys(data[0])
+    		.filter(function(d){
+    			return ((d != "league") & (d != "team"));
+    		});
+
+    	var selection = elements[0];
+
+    	var y = d3.scale.linear()
+    			.domain([0, d3.max(data, function(d){
+    				return +d[selection];
+    			})])
+    			.range([height, 0]);
+
+    	var x = d3.scale.ordinal()
+    			.domain(data.map(function(d){ return d.team;}))
+    			.rangeBands([0, width]);
+
+    	var xAxis = d3.svg.axis()
+    		.scale(x)
+    	    .orient("bottom");
+
+    	var yAxis = d3.svg.axis()
+    		.scale(y)
+    	    .orient("left");
+
+    	svg.append("g")
+        	.attr("class", "x axis")
+        	.attr("transform", "translate(0," + height + ")")
+        	.call(xAxis)
+        	.selectAll("text")
+        	.style("font-size", "10px")
+          .style("text-anchor", "end")
+          .attr("dx", "-.8em")
+          .attr("dy", "-.55em")
+          .attr("transform", "rotate(-45)" );
+
+     	svg.append("g")
+        	.attr("class", "y axis")
+        	.call(yAxis);
+
+    	svg.selectAll("rectangle")
+    		.data(data)
+    		.enter()
+    		.append("rect")
+    		.attr("class","rectangle")
+    		.attr("width", width/data.length)
+    		.attr("height", function(d){
+    			return height - y(+d[selection]);
+    		})
+    		.attr("x", function(d, i){
+    			return (width / data.length) * i ;
+    		})
+    		.attr("y", function(d){
+    			return y(+d[selection]);
+    		})
+    		.append("title")
+    		.text(function(d){
+    			return d.team + " : " + d[selection];
+    		});
+
+    	var selector = d3.select("#drop")
+        	.append("select")
+        	.attr("id","dropdown")
+        	.on("change", function(d){
+            	selection = document.getElementById("dropdown");
+
+      y.domain([0, d3.max(data, function(d){
+    	   return +d[selection.value];})]);
+
+      yAxis.scale(y);
+
+      d3.selectAll(".rectangle")
+        .transition()
+    	  .attr("height", function(d){
+    		    return height - y(+d[selection.value]);
+    				})
+    				.attr("x", function(d, i){
+    					return (width / data.length) * i ;
+    				})
+    				.attr("y", function(d){
+    					return y(+d[selection.value]);
+    				})
+            .ease("linear")
+            .select("title")
+            .text(function(d){
+              return d.team + " : " + d[selection.value];
+            });
+
+        d3.selectAll("g.y.axis")
+          .transition()
+          .call(yAxis);
+        });
+
+        selector.selectAll("option")
+                .data(elements)
+                .enter().append("option")
+                .attr("value", function(d){
+                      return d;
+                    })
+                .text(function(d){
+                      return d;
+                    })
+        });
+
+    </script>
+  </body>
+  </html>
